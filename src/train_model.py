@@ -6,16 +6,20 @@ from sklearn.preprocessing import StandardScaler
 from tensorflow import keras
 from tensorflow.keras import layers
 import pickle
-from joblib import dump, load
 
 # === Setup path ===
 DATA_PATH = 'data/home_data.csv'
 MODEL_DIR = 'model'
 SCALER_PATH = os.path.join(MODEL_DIR, 'scaler.pkl')
-MODEL_PATH = os.path.join(MODEL_DIR, 'model.keras')
+MODEL_PATH = os.path.join(MODEL_DIR, 'model.h5')
 
 # === Load dataset ===
-df = pd.read_csv(DATA_PATH)
+try:
+    df = pd.read_csv(DATA_PATH)
+except FileNotFoundError:
+    print(f"❌ ERROR: File '{DATA_PATH}' tidak ditemukan. Pastikan nama file sudah benar.")
+    exit()
+
 x = df[['building_area', 'numbers_of_rooms', 'age_of_the_house']]
 y = df['house_price']
 
@@ -52,7 +56,7 @@ print("\n🚀 Start Model Training.....")
 history = model.fit(
     x_train,
     y_train,
-    epochs=101,
+    epochs=100,
     validation_data=(x_test, y_test),
     verbose=1
 )
