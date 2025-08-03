@@ -2,3 +2,4 @@ tensorflow
 pandas
 streamlit
 numpy
+scikit-learn
